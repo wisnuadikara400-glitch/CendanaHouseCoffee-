@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cendana House – Antrean racikan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eaf3fa;
+    --surface: #ffffff;
+    --ink: #1b3a5f;
+    --brand: #005a9e;
+    --sky: #5bc0e4;
+    --sky-soft: #a0dfef;
+    --sky-pale: #eaf3fa;
+    --muted: #4ab5df;
+    --line: #bfe3f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1f2f;
+      --surface: #14293d;
+      --ink: #e4f1fa;
+      --brand: #2f8fd8;
+      --sky: #2d7da3;
+      --sky-soft: #1d4258;
+      --sky-pale: #1b3750;
+      --muted: #7cc9ea;
+      --line: #27506b;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { height: 100%; }
+  body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  svg { display: block; flex: none; }
+  button { font: inherit; cursor: pointer; }
+
+  /* Header */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 2px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 28px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    display: grid; place-items: center;
+  }
+  .brand-name { font-family: "Lora", Georgia, serif; font-size: 24px; line-height: 1.1; color: var(--ink); }
+  .brand-sub { font-size: 10px; font-weight: 600; letter-spacing: .08em; color: var(--brand); }
+  .role-tab {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 26px;
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: 0 0 0 5px var(--sky-pale);
+    color: var(--brand); font-weight: 600; font-size: 15px;
+  }
+  .who { display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+  .chip {
+    display: inline-flex; align-items: center;
+    padding: 4px 12px; border-radius: 999px;
+    background: var(--sky-soft); color: var(--ink);
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+  }
+  .who-name { font-weight: 600; font-size: 14px; }
+  .who-date { font-size: 12px; color: var(--muted); }
+
+  /* Page */
+  main { padding: 32px 28px 24px; max-width: 1400px; margin: 0 auto; }
+  .page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  h1 { font-size: 30px; font-weight: 500; letter-spacing: -.01em; }
+  .tagline { color: var(--brand); margin-top: 6px; }
+  .page-chips { display: flex; gap: 12px; padding-top: 6px; }
+  .page-chips .chip { font-size: 12.5px; padding: 5px 14px; }
+
+  .sortbar {
+    margin-top: 24px; background: var(--surface); border-radius: 10px;
+    padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .sortbar .l { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+  .sortbar .r { color: var(--muted); font-size: 12px; }
+
+  .board {
+    margin-top: 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 22px;
+    align-items: start;
+  }
+  .col-head {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .col-head h2 { font-size: 16px; font-weight: 600; }
+  .col-head .chip { background: var(--sky-soft); }
+  .col-sub { color: var(--brand); font-size: 12.5px; margin-top: 8px; padding-bottom: 12px; border-bottom: 3px solid var(--line); }
+  .col.priority .col-sub { border-bottom-color: var(--brand); }
+  .col.priority .chip { background: var(--sky); }
+  .cards { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px;
+    animation: pop .18s ease-out;
+  }
+  .col.priority .card { border-color: var(--sky); }
+  .card.roomy { padding: 14px 16px 16px; }
+  .card.leaving { opacity: 0; transform: scale(.97); transition: opacity .2s, transform .2s; }
+  @keyframes pop { from { opacity: .0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .card-top { display: flex; justify-content: space-between; align-items: center; }
+  .order-id { font-size: 12px; font-weight: 600; color: var(--brand); }
+  .card .age { background: var(--sky-soft); }
+  .col.priority .card .age { background: var(--sky); }
+  .name { font-size: 20px; font-weight: 700; margin-top: 12px; }
+  .roomy .name { font-size: 28px; margin-top: 18px; }
+  .meta { font-size: 12px; color: var(--brand); margin-top: 2px; }
+  .items { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .roomy .items { margin-top: 18px; gap: 14px; }
+  .item-row { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .roomy .item-row { font-size: 15px; }
+  .qty { background: var(--sky-pale); border-radius: 8px; padding: 3px 8px; font-size: 13px; font-weight: 600; }
+  .note {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--sky-soft); color: var(--brand);
+    border-radius: 8px; padding: 6px 10px; font-size: 12px; margin-top: 6px;
+  }
+  .note svg { margin-top: 1px; }
+  .roomy .note { padding: 9px 12px; font-size: 13px; margin-top: 8px; }
+  .note-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .03em; margin-bottom: 4px; text-transform: uppercase; }
+  .done-btn {
+    margin-top: 10px; width: 100%;
+    background: var(--brand); color: #fff; border: 0; border-radius: 10px;
+    padding: 11px 12px; font-weight: 600; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: filter .15s, transform .1s;
+  }
+  .roomy .done-btn { margin-top: 20px; padding: 13px 12px; border-radius: 12px; }
+  .done-btn:hover { filter: brightness(1.1); }
+  .done-btn:active { transform: scale(.98); }
+  .done-btn:focus-visible, .undo:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+
+  .tip {
+    margin-top: 12px; background: var(--sky-soft); color: var(--ink);
+    border-radius: 12px; padding: 14px 16px; font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .empty {
+    border: 1.5px dashed var(--line); border-radius: 16px; padding: 28px 16px;
+    text-align: center; color: var(--muted); font-size: 13px;
+  }
+
+  .footer { margin-top: 28px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12px; }
+  .footer .l { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .footer .r { color: var(--muted); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+    background: var(--ink); color: var(--surface);
+    border-radius: 12px; padding: 10px 16px; font-size: 13px; font-weight: 500;
+    display: flex; gap: 14px; align-items: center;
+    transition: opacity .2s, transform .2s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .undo { background: none; border: 0; color: var(--sky-soft); font-weight: 700; padding: 2px 4px; }
+
+  @media (max-width: 960px) {
+    .board { grid-template-columns: 1fr; }
+    .topbar { grid-template-columns: 1fr auto; padding: 12px 16px; }
+    .role-tab { display: none; }
+    main { padding: 20px 16px; }
+  }
+  @media (max-width: 560px) {
+    .who-name, .who-date { display: none; }
+    h1 { font-size: 26px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card, .toast, .card.leaving { animation: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10h11v4a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5v-4z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M9 3v2M12 3v2M15 3v2"/></svg>
+    </div>
+    <div>
+      <div class="brand-name">Cendana House</div>
+      <div class="brand-sub">COFFEE</div>
+    </div>
+  </div>
+  <div class="role-tab">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 10h11v4a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5v-4z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M9 3v2M12 3v2M15 3v2"/></svg>
+    Barista
+  </div>
+  <div class="who">
+    <span class="chip">Kedai buka</span>
+    <div>
+      <div class="who-name">Arif • Barista</div>
+      <div class="who-date">Sabtu, 10 Okt 2026 • 14.00</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <div>
+      <h1>Antrean racikan</h1>
+      <p class="tagline">Satu cangkir, satu perhatian. Dahulukan pesanan paling lama.</p>
+    </div>
+    <div class="page-chips">
+      <span class="chip" id="chipOrders">4 pesanan aktif</span>
+      <span class="chip" id="chipDrinks">9 minuman</span>
+    </div>
+  </div>
+
+  <div class="sortbar">
+    <div class="l">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h10M3 12h7M3 18h4"/><path d="M17 5v14m0 0-3-3m3 3 3-3"/></svg>
+      Urutan: paling lama → terbaru
+    </div>
+    <div class="r">Waktu acuan 14.00 WIB • Shift siang</div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="footer">
+    <div class="l">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></svg>
+      <span id="doneCount">80 pesanan selesai hari ini</span>
+    </div>
+    <div class="r">Target waktu racik: ≤ 8 menit</div>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastText"></span>
+  <button class="undo" id="undo" type="button">Batalkan</button>
+</div>
+
+<script>
+  var ICON_NOTE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>';
+  var ICON_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>';
+  var ICON_LEAF = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19c2-4 5-7 9-9"/></svg>';
+
+  /* status: "prioritas" | "dibuat" | "menunggu" */
+  var orders = [
+    { id: "CH-082", name: "Bima",  age: 12, type: "Di kedai • Meja 04", at: "13.48", status: "prioritas",
+      items: [{ q: 2, n: "Cappuccino", note: "Extra hot" }] },
+    { id: "CH-083", name: "Sari",  age: 9,  type: "Bawa pulang", at: "13.51", status: "prioritas",
+      items: [{ q: 1, n: "Caffè Latte", note: "Tanpa gula" }, { q: 1, n: "Matcha Latte", note: "Susu oat" }] },
+    { id: "CH-084", name: "Nadia", age: 6,  type: "Bawa pulang", at: "13.54", status: "dibuat",
+      items: [{ q: 2, n: "Caffè Latte", note: "Susu oat, tanpa gula" }, { q: 1, n: "Americano", note: "Es sedikit" }] },
+    { id: "CH-085", name: "Raka",  age: 2,  type: "Di kedai • Meja 07", at: "13.58", status: "menunggu",
+      items: [{ q: 1, n: "Caffè Latte", note: "Gula setengah" }, { q: 1, n: "Americano", note: "Tanpa es" }] }
+  ];
+  var done = 80;
+  var lastRemoved = null;
+  var toastTimer = null;
+
+  var columns = [
+    { key: "prioritas", title: "Perlu diprioritaskan", sub: "Menunggu lebih dari 8 menit", cls: "priority", roomy: false },
+    { key: "dibuat",    title: "Sedang dibuat",        sub: "Sedang ditangani barista",   cls: "",         roomy: true,  tip: true },
+    { key: "menunggu",  title: "Menunggu",             sub: "Pesanan baru dari kasir",    cls: "",         roomy: true }
+  ];
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function cardHTML(o, roomy) {
+    var multi = roomy;
+    var items = o.items.map(function (it) {
+      var note = multi
+        ? '<div class="note">' + ICON_NOTE + '<div><span class="note-label">Catatan khusus</span>' + esc(it.note) + '</div></div>'
+        : '<div class="note">' + ICON_NOTE + '<span>' + esc(it.note) + '</span></div>';
+      return '<div><div class="item-row"><span class="qty">' + it.q + '×</span>' + esc(it.n) + '</div>' + note + '</div>';
+    }).join("");
+    return '<article class="card' + (roomy ? ' roomy' : '') + '" data-id="' + o.id + '">' +
+      '<div class="card-top"><span class="order-id">#' + o.id + '</span><span class="chip age">' + o.age + ' menit</span></div>' +
+      '<div class="name">' + esc(o.name) + '</div>' +
+      '<div class="meta">' + esc(o.type) + ' • Masuk ' + o.at + '</div>' +
+      '<div class="items">' + items + '</div>' +
+      '<button class="done-btn" type="button" data-done="' + o.id + '" aria-label="Selesai: pesanan ' + esc(o.name) + '">' + ICON_CHECK + 'Selesai</button>' +
+      '</article>';
+  }
+
+  function render() {
+    orders.sort(function (a, b) { return b.age - a.age; });
+    var board = document.getElementById("board");
+    board.innerHTML = columns.map(function (c) {
+      var list = orders.filter(function (o) { return o.status === c.key; });
+      var body = list.length
+        ? list.map(function (o) { return cardHTML(o, c.roomy); }).join("")
+        : '<div class="empty">Tidak ada pesanan di sini.</div>';
+      var tip = (c.tip && list.length)
+        ? '<div class="tip">' + ICON_LEAF + 'Periksa jenis susu dan catatan sebelum meracik.</div>' : "";
+      return '<section class="col ' + c.cls + '">' +
+        '<div class="col-head"><h2>' + c.title + '</h2><span class="chip">' + list.length + ' pesanan</span></div>' +
+        '<div class="col-sub">' + c.sub + '</div>' +
+        '<div class="cards">' + body + '</div>' + tip + '</section>';
+    }).join("");
+
+    var drinks = orders.reduce(function (s, o) {
+      return s + o.items.reduce(function (t, i) { return t + i.q; }, 0);
+    }, 0);
+    document.getElementById("chipOrders").textContent = orders.length + " pesanan aktif";
+    document.getElementById("chipDrinks").textContent = drinks + " minuman";
+    document.getElementById("doneCount").textContent = done + " pesanan selesai hari ini";
+  }
+
+  function showToast(text) {
+    document.getElementById("toastText").textContent = text;
+    var t = document.getElementById("toast");
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); lastRemoved = null; }, 5000);
+  }
+
+  document.getElementById("board").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-done]");
+    if (!btn) return;
+    var id = btn.getAttribute("data-done");
+    var card = btn.closest(".card");
+    card.classList.add("leaving");
+    setTimeout(function () {
+      var idx = orders.findIndex(function (o) { return o.id === id; });
+      if (idx < 0) return;
+      lastRemoved = orders.splice(idx, 1)[0];
+      done += 1;
+      render();
+      showToast("Pesanan #" + lastRemoved.id + " (" + lastRemoved.name + ") selesai.");
+    }, 180);
+  });
+
+  document.getElementById("undo").addEventListener("click", function () {
+    if (!lastRemoved) return;
+    orders.push(lastRemoved);
+    lastRemoved = null;
+    done -= 1;
+    render();
+    document.getElementById("toast").classList.remove("show");
+  });
+
+  render();
+</script>
+<a href="index.html" id="kembali-menu" style="position:fixed;left:12px;bottom:12px;z-index:40;font:600 12px Inter,system-ui,sans-serif;text-decoration:none;color:#005a9e;background:rgba(255,255,255,.92);border:1px solid #c4e3f1;border-radius:999px;padding:8px 12px;box-shadow:0 1px 4px rgba(0,0,0,.12)">&larr; Menu</a>
+</body>
+</html>
